@@ -4,8 +4,8 @@ using namespace std;
 
 int n,e,k,a,b;
 
-vector <int> friends[305];
-bool visited[305];
+vector <int> friends[10000];
+bool visited[10000];
 void bfs(int src)
 {
 	int v=0;
@@ -13,19 +13,22 @@ void bfs(int src)
 	queue < pair <int,int> > q;
 	q.push(make_pair(src,0));
 	int count = 0;
+	
+	// mark current node as marked
 	visited[src] = true;
 	while(!q.empty())
 	{
-		pair<int,int> x = q.front();
+		pair<int,int> current = q.front();
 		q.pop();
 		v++;
-		for(int ii=0 ; ii<friends[x.first].size();ii++)
+		// loop over adjacent nodes of popped node
+		for(int j=0 ; j<friends[current.first].size();j++)
 		{
-			int i = friends[x.first][ii];
-			if(!visited[i] && x.second+1<=k)
+			int i = friends[current.first][j];
+			if(!visited[i] && current.second+1<=k)
 			{
 				visited[i] = true;
-				q.push({i,x.second+1});
+				q.push({i,current.second+1});
 			}
 		}
 	}
@@ -39,10 +42,10 @@ int main()
 	cin >> n >> e >> k;
 
 	int ctr[n] = {};
+	// creating graph
 	for(int i=0;i<e;i++)
 	{
 		cin >> a >> b;
-
 		friends[a].push_back(b);
 		friends[b].push_back(a);
 
